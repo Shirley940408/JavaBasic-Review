@@ -61,3 +61,27 @@ private static void LeapYear(int year){
   }
 }
 ```
+# coding-control flow
+## Starting with an Array
+```Java
+public static void main(String[] args){
+    int[] score = {90, 95, 92, 89, 100, 90};
+    int firstScore = score[5];
+    score[0] = 30;
+    int sum;
+    for(int i = 0; i < score.length; i++) {
+        sum += score[i];
+    }
+}
+//score.length is valid in Java, as score is an Array.
+```
+### multi-dimention Array
+```Java
+int[][] matrix = new int[][]{
+{1, 4, 7},
+{2, 15, 13},
+{6, 8, 12},
+};
+int [][] anotherMatrix = new int[4][4];
+```
+
