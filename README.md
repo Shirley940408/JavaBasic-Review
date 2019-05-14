@@ -84,4 +84,20 @@ int[][] matrix = new int[][]{
 };
 int [][] anotherMatrix = new int[4][4];
 ```
-
+# function
+## format of a function
+```Java
+ boolean findNumber(int[] array, int target){
+    for(int i = 0; i < array.length; i++){
+      if (target == array[i]){
+          return true;
+      }
+    }
+    return false;
+ }
+```
+### something must have in a function:
+#### - return type： boolean (if this function does not have a return value, then put void as is return type)
+#### - function name -- lower camel case, always start with a verb
+#### - every parameter type need to be settled: int [] array, int target
+#### - if this function has a return value, then always written in the **outermost layer** of the function.(Something you have writen in the switch method like if(){...;return value;}, but it will cause error unless you write another return in the outermost layer)
