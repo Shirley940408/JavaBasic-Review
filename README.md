@@ -101,3 +101,22 @@ int [][] anotherMatrix = new int[4][4];
 #### - function name -- lower camel case, always start with a verb
 #### - every parameter type need to be settled: int [] array, int target
 #### - if this function has a return value, then always written in the **outermost layer** of the function.(Something you have writen in the switch method like if(){...;return value;}, but it will cause error unless you write another return in the outermost layer)
+
+## String
+### get the length of a String
+
+```java
+String str = "a string";
+System.out.println(str.length());
+//length vs. length()
+//.length is used in an Array, and length() is used in a String
+```
+### The traverse of String
+```Java
+String str ="a string";
+for(int i = 0; i < str.length(); i++){
+char ch =str.charAt(i);
+//...
+}
+
+```
