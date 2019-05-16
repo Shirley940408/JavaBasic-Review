@@ -102,6 +102,21 @@ int [][] anotherMatrix = new int[4][4];
 #### - every parameter type need to be settled: int [] array, int target
 #### - if this function has a return value, then always written in the **outermost layer** of the function.(Something you have writen in the switch method like if(){...;return value;}, but it will cause error unless you write another return in the outermost layer)
 
+#### Attention points:
+- the main different in parameter of Java and JavaScript is that JavaScript does not need to have to initial all the parameters, but in Java you have to.
+```Js
+const example = (a, b, c) =>({return a + b + c})
+example(1,2);
+//the output is undefined, cause c has not being initialized. But it will not cause error.
+```
+```Java
+public static int example(int a, int b, int c){
+ return a + b + c; 
+}
+public static main(String[] args){
+System.out.println(example(1));//it will cause error, cause the type and number of parameters must be the same.
+} 
+```
 ## String
 ### get the length of a String
 
