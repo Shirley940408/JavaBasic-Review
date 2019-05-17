@@ -84,7 +84,7 @@ int[][] matrix = new int[][]{
 };
 int [][] anotherMatrix = new int[4][4];
 ```
-# function
+# function, String, Object
 ## format of a function
 ```Java
  boolean findNumber(int[] array, int target){
@@ -104,7 +104,7 @@ int [][] anotherMatrix = new int[4][4];
 
 #### Attention points:
 - the main different in parameter of Java and JavaScript is that JavaScript does not need to have to initial all the parameters, but in Java you have to.
-```Js
+```JavaScript
 const example = (a, b, c) =>({return a + b + c})
 example(1,2);
 //the output is undefined, cause c has not being initialized. But it will not cause error.
@@ -173,3 +173,8 @@ class Student{
      }
 }
 ```
+# Reference, Data Structure
+## The reservation model in Java
+- #### We could imagine that Java memory space is just like an  array with limitation, all the defined variables are reserved in this memory space. That means Java need to separate the function space for different use. 
+- #### There are two main class of memory: stack(栈), heap(堆)
+- #### memory point: all the parameters inside of function are remained in stack, all the parameters outside of function are remained in heap. (方法内定义的变量全部在栈中，方法外定义的变量全部在堆中)
