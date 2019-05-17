@@ -181,3 +181,16 @@ class Student{
 
 ## Differenct assignment ways (赋值的不同方式)
 - #### For basic data type -- copy value (Acutally there are two place using copy values, one is making value assignments for basic data type, another one is to assign value to function, it use copy value either. But if the parameter that itself is object, it means copy the reference, it would change the object)
+- #### For object, -- copy the reference. Thus, if you assign one object to another, it means that both object has the same reference.
+```Java
+class Stu{
+public String name;
+//...
+}
+Stu stu1 = new Stu();
+Stu stu2 = stu1;
+stu2.name="Lucy";
+//then both the stu1 and stu2 has the same name, for there references are the same.
+
+```
+- #### What is Reference -- It is the address of the variable.
