@@ -194,3 +194,18 @@ stu2.name="Lucy";
 
 ```
 - #### What is Reference -- It is the address of the variable.
+
+### ArrayList
+#### The difference between ArrayList and LinkedList
+- ArrayList
+ArrayList：内部使用数组的形式实现了存储，实现了RandomAccess接口，利用数组的下面进行元素的访问，因此对元素的随机访问速度非常快。
+因为是数组，所以ArrayList在初始化的时候，有初始大小10，插入新元素的时候，会判断是否需要扩容，扩容的步长是0.5倍原容量，扩容方式是利用数组的复制，因此有一定的开销；
+另外，ArrayList在进行元素插入的时候，需要移动插入位置之后的所有元素，位置越靠前，需要位移的元素越多，开销越大，相反，插入位置越靠后的话，开销就越小了，如果在最后面进行插入，那就不需要进行位移；
+
+- LinkedList
+LinkedList：内部使用双向链表的结构实现存储，LinkedList有一个内部类作为存放元素的单元，里面有三个属性，用来存放元素本身以及前后2个单元的引用，另外LinkedList内部还有一个header属性，用来标识起始位置，LinkedList的第一个单元和最后一个单元都会指向header，因此形成了一个双向的链表结构。
+LinkedList是采用双向链表实现的。所以它也具有链表的特点，每一个元素（结点）的地址不连续，通过引用找到当前结点的上一个结点和下一个结点，即插入和删除效率较高，只需要常数时间，而get和set则较为低效。
+LinkedList的方法和使用和ArrayList大致相同，由于LinkedList是链表实现的，所以额外提供了在头部和尾部添加/删除元素的方法，也没有ArrayList扩容的问题了。另外，ArrayList和LinkedList都可以实现栈、队列等数据结构，但LinkedList本身实现了队列的接口，所以更推荐用LinkedList来实现队列和栈。
+
+- In a conclusion, ArrayList is implied based on array, while LinkedList is base on doubly linked list -- a data structure that need another two info besides yourself(the reference of the element ahead of you and the reference of the element later than you). Thus, the search and update effective of Arraylist is higher, while the add and delete effective of LinkedList is highter.
+[Java基础 ArrayList与LinkedList区别 - 简书](https://www.jianshu.com/p/30a8195f0b81)
