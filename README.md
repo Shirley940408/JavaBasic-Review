@@ -209,3 +209,9 @@ LinkedList的方法和使用和ArrayList大致相同，由于LinkedList是链表
 
 - In a conclusion, ArrayList is implied based on array, while LinkedList is base on doubly linked list -- a data structure that need another two info besides yourself(the reference of the element ahead of you and the reference of the element later than you). Thus, the search and update effective of Arraylist is higher, while the add and delete effective of LinkedList is highter.
 [Java基础 ArrayList与LinkedList区别 - 简书](https://www.jianshu.com/p/30a8195f0b81)
+
+### LinkedList
+#### What is LinkedList structure?
+- ##### Linked list is a list combined by nodes.
+- ##### linked node has a linear structure.
+###### The linkedList has been encapsulated in Java, but I recommend you to rebuild one by yourself for better interview performance.
