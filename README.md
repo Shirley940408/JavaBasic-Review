@@ -215,3 +215,34 @@ LinkedList的方法和使用和ArrayList大致相同，由于LinkedList是链表
 - ##### Linked list is a list combined by nodes.
 - ##### linked node has a linear structure.
 ###### The linkedList has been encapsulated in Java, but I recommend you to rebuild one by yourself for better interview performance.
+```Java
+public class LinkedList {
+    public static void runLinkedList(){
+        ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(3);
+        ListNode node3 = new ListNode(5);
+        ListNode node4 = new ListNode(7);
+        node1.next = node2;
+        node2.next = node3;
+        node3.next = node4;
+        
+        ListNode cur =node1;
+        while (cur !=null){
+            System.out.print(cur.val +" ");
+            cur = cur.next;
+        }
+    }
+    public static void main(String[] args){
+        runLinkedList();
+    }
+
+}
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x){
+        val = x;
+        next = null;
+    }
+}
+```
