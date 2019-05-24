@@ -308,3 +308,96 @@ public class MyLinkedList {
 
 ### 什么是 Interface
 ###### Java接口(Interface)是一系列方法的声明，是一些方法特征的集合，一个接口只有方法的特征没有方法的实现，因此这些方法可以在不同的地方被不同的类实现，而这些实现可以具有不同的行为。打一个比方，接口好比一个戏中的角色，这个角色有一些特定的属性和操作，然后实现接口的类就好比扮演这个角色的人，一个角色可以由不同的人来扮演，而不同的演员之间除了扮演一个共同的角色之外，并不要求其它的共同之处。
+
+### 有哪些面试常用的Interface
+- ##### Set: 无重复数据
+Hashset
+```Java
+  Set<String> set = new HashSet<>();
+  System.out.println();
+  for(int i = 0; i < 6; i++){
+      set.add(i + " ");
+  }
+  set.add(null + " ");
+  set.add(1 + " ");
+  for(Iterator i = set.iterator(); i.hasNext();){
+      System.out.print(i.next());
+//0 5 4 3 null 2 1 数据输出无序，可以加入空值, 不能加入重复元素
+  }
+```
+TreeSet
+```Java
+  Set<String> set = new TreeSet<>();
+  for (int i = 1; i < 6; i ++) {
+    set.add(i + "");
+  }
+  set.add("1"); //不会重复写入数据
+  //set.add(null);//不可以写入空数据
+  Iterator<String> iter = set.iterator();
+  while (iter.hasNext()) {
+    system.out.print(iter.next() + " ");//数据有序
+  }// 输出(有序)为 1 2 3 4 5
+```
+- ##### Map: key,value映射关系, key 不能重复，value可以重复
+HashMap
+```Java
+public class Solution {
+    public static void main(String[] args){
+        Map<String, String> map = new HashMap<>();
+        for (int i = 5; i > 0; i --) {
+            map.put(i + "", i + "");
+        }
+        map.put("1","1");//key无重复
+        map.put("11","1");//value可以重复
+        map.put(null, null);//可以为空
+        for (Iterator i = map.keySet().iterator(); i.hasNext(); ) {
+            String key = (String)i.next();
+            String value = map.get(key);
+            System.out.println("key = " + key + ", value = " + value);
+        }
+    }
+}
+//输出
+/*
+key = 11, value = 1
+key = null, value = null
+key = 1, value = 1
+key = 2, value = 2
+key = 3, value = 3
+key = 4, value = 4
+key = 5, value = 5
+*/
+//输出顺序与输入顺序无关
+
+```
+TreeMap
+```Java
+        Map<String, String> map = new TreeMap<>();
+        for (int i = 5; i > 0; i --) {
+            map.put(i + "", i + "");
+        }
+        map.put("1","1");//key无重复
+        map.put("11","1");//value可以重复
+        //map.put(null, null);//不可以为空
+        for (Iterator i = map.keySet().iterator(); i.hasNext(); ) {
+            String key = (String)i.next();
+            String value = map.get(key);
+            System.out.println("key = " + key + ", value = " + value);
+        }
+```
+- ##### List：元素有序，可以重复, 可以为空
+一个 List 是一个元素有序的、可以重复(这一点与Set和Map不同)、可以为 null 的集合，List的实现类在面试中常用是：LinkedList 和 ArrayList
+- LinkedList -- 基于链表实现
+- ArrayList -- 基于动态数组实现
+- LinkedList 与 ArrayList 对比：
+> 对于随机访问get和set，ArrayList绝对优于LinkedList，因为LinkedList要移动指针
+> 对于新增和删除操作add和remove，LinedList比较占优势，因为ArrayList要移动数据
+
+### Queue
+队列是一种比较重要的数据结构，它支持FIFO(First in First out)，即尾部添加、头部删除（先进队列的元素先出队列），跟我们生活中的排队类似。
+- ##### PriorityQueue
+>基于堆(heap)实现
+>非FIFO(最先出队列的是优先级最高的元素)
+- ##### LinkedList
+>基于链表实现
+>FIFO
