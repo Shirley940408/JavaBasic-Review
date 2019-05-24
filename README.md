@@ -246,3 +246,65 @@ class ListNode {
     }
 }
 ```
+### custom java
+
+```Java
+public class MyLinkedList {
+    private ListNode head;
+    //create
+    public void add(int location, int value){
+        if(location > 0){
+            ListNode pre = head;
+            for(int i = 0; i < location -1; i++){
+                pre = pre.next;
+            }
+            ListNode newNode = new ListNode(value);
+            newNode.next = pre.next;
+            pre.next = newNode;
+        }else{
+            ListNode newNode = new ListNode(value);
+            newNode.next = head;
+            head = newNode;
+        }
+    }
+
+    //read
+    public int get(int location){
+        ListNode cur = head;
+        for(int i = 0; i < location; i++){
+            cur = cur.next;
+        }
+        return cur.val;
+    }
+
+    //update
+    public void set(int location, int value){
+        ListNode cur = head;
+        for(int i = 0; i < location; i++){
+            cur = cur.next;
+        }
+        cur.val = value;
+    }
+
+
+    //delete
+    public int remove(int location){
+        ListNode res = null;
+        if(location > 0){
+            ListNode pre = head;
+            for(int i = 0; i < location -1; i++) {
+                pre = pre.next;
+            }
+            res = pre.next;
+            pre.next = pre.next.next;
+        }else{
+            head = head.next;
+        }
+        return res.val;
+    }
+}
+
+```
+
+### 什么是 Interface
+###### Java接口(Interface)是一系列方法的声明，是一些方法特征的集合，一个接口只有方法的特征没有方法的实现，因此这些方法可以在不同的地方被不同的类实现，而这些实现可以具有不同的行为。打一个比方，接口好比一个戏中的角色，这个角色有一些特定的属性和操作，然后实现接口的类就好比扮演这个角色的人，一个角色可以由不同的人来扮演，而不同的演员之间除了扮演一个共同的角色之外，并不要求其它的共同之处。
