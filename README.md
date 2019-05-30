@@ -631,3 +631,53 @@ public class Solution {
 1. newNode.next = preNode.next.next;
 // It is not newNode = preNode.next.next -- **wrong way**
 3. preNode.next = newNode;
+## Stack
+- push
+- pop
+- peek(getTop)
+- isEnmpty
+ ## Custom Stack with LinkedList
+ ```Java
+import java.util.NoSuchElementException;
+public class MyStack {
+    private ListNode head;
+    public void push(int value){
+        ListNode newhead = new ListNode(value);
+        newhead.next = head;
+        head = newhead;
+    }
+    public int pop(){
+        if(isEmpty()){
+            throw new NoSuchElementException();
+        }
+        int ret = head.val;
+        head = head.next;
+        return ret;
+    }
+    public int peek(){
+        if(isEmpty()){
+            throw new NoSuchElementException();
+        }
+        return head.val;
+    }
+    public boolean isEmpty(){
+        return head == null;
+    }
+    public void clear(){
+        head = null;
+    }
+}
+ ```
+ #### By the way, Java has the encapsulated Stack
+ ```Java
+        Stack<Integer> stack = new Stack<>();
+        stack.push(10);
+        stack.push(20);
+        stack.push(-3);
+        stack.push(0);
+        while(!stack.isEmpty()){
+            System.out.println(stack.peek());
+            stack.pop();
+        }
+ ```
+ #### 函数中的函数调用本身就是栈的数据结构，先进入的后弹出（先执行的后返回）
