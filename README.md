@@ -681,3 +681,65 @@ public class MyStack {
         }
  ```
  #### 函数中的函数调用本身就是栈的数据结构，先进入的后弹出（先执行的后返回）
+  ### Custom a Queue with LinkedList
+ ```Java
+import java.util.NoSuchElementException;
+
+public class MyQueueBasedLinkedList {
+    private ListNode head;
+    private ListNode tail;
+
+    public boolean isEmpty(){
+        return head == null;
+    }
+    public void clear(){
+        head = tail = null;
+    }
+    public int poll(){
+        if(isEmpty()){
+            throw new NoSuchElementException();
+        }else{
+            int value = head.val;
+            head = head.next;
+            if(head == null){
+                tail = null;
+            }
+            return value;
+        }
+    }
+    public int peek(){
+        if(isEmpty()){
+            throw new NoSuchElementException();
+        }else{
+            return head.val;
+        }
+    }
+    public void offer(int val){
+        if(tail == null){
+            head = tail = new ListNode(val);
+        }else{
+            tail.next = new ListNode(val);
+            tail = tail.next;
+        }
+    }
+}
+ ```
+ #### Some Fundamental Points
+ 
+ 1. To start a queue, you need not only the head point, but also the tail for the insert function for better time complexity (O(n)).
+ 
+2. For poll() function, once the last element has been polled to the queue, it could cause the head turn to tail's next, which could cause error for next operations. Thus, we need if(head == null){ tail = null };
+
+#### Java has encapsulated queue
+```Java
+  Queue<Integer> que = new LinkedList<>();
+  que.offer(10);
+  que.offer(20);
+  que.offer(-3);
+  que.offer(0);
+
+  while (!que.isEmpty()){
+      System.out.print(que.peek() + " ");
+      que.poll();
+  }
+```
