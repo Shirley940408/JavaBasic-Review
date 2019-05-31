@@ -726,7 +726,7 @@ public class MyQueueBasedLinkedList {
  ```
  #### Some Fundamental Points
  
- 1. To start a queue, you need not only the head point, but also the tail for the insert function for better time complexity (O(n)).
+1. To start a queue, you need not only the head point, but also the tail for the insert function for better time complexity (O(n)).
  
 2. For poll() function, once the last element has been polled to the queue, it could cause the head turn to tail's next, which could cause error for next operations. Thus, we need if(head == null){ tail = null };
 
