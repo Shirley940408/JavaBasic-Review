@@ -743,3 +743,101 @@ public class MyQueueBasedLinkedList {
       que.poll();
   }
 ```
+### Set details -- 集合中存储非重复的无序数据
+- insert(插入)
+- find(查找)
+- delete(删除)
+
+#### HashSet -- 基于平衡树 O(logN)
+#### TreeSet -- O(1)
+
+### List details -- 可以重复，无序
+
+### Index(索引) -- key-value pairs
+### Set details -- 集合中存储非重复的无序数据
+- insert(插入)
+- find(查找)
+- delete(删除)
+
+#### HashSet -- 基于平衡树 O(logN)
+#### TreeSet -- O(1)
+
+### List details -- 可以重复，无序
+
+### Index(索引) -- 无序 key-value pairs -- key不可重复，value可以重复
+
+### Algorithm
+#### 1. Implement Queue by Two Stacks
+
+```Java
+public class MyQueue {
+    Stack<Integer> stack1 ;
+    Stack<Integer> stack2 ;
+    public MyQueue() {
+        // do intialization if necessary
+        stack1 = new Stack<>();
+        stack2 = new Stack<>();
+    }
+    /*
+     * @param element: An integer
+     * @return: nothing
+     */
+    public void push(int element) {
+        // write your code here
+        stack1.push(element);
+    }
+
+    /*
+     * @return: An integer
+     */
+    public int pop() {
+        // write your code here
+        if(stack2.isEmpty()){
+            while(!stack1.isEmpty()){
+            stack2.push(stack1.pop());
+            }
+        }
+        if(!stack2.isEmpty()){
+            return stack2.pop();   
+        }else{
+            throw new NoSuchElementException();
+        }
+    }
+
+    /*
+     * @return: An integer
+     */
+    public int top() {
+        // write your code here
+        if(stack2.isEmpty()){
+            while(!stack1.isEmpty()){
+            stack2.push(stack1.pop());
+            }
+        }
+        if(!stack2.isEmpty()){
+            return stack2.peek();
+        }else{
+            throw new NoSuchElementException();
+        }
+    }
+}
+```
+#### 易错点：
+1.while循环容易写成(!stack1.isEmpty())&& stack2.isEmpty(){stack2.push(stack1.pop())};但是这样会导致连续push 两个数，第二个数由于stack1和stack2都不空，所以push不进stack2然后出错。 所以!stack1.isEmpty()跟stack2.isEmpty()必须写在两个判断条件里面
+2.if跟while在理论上谁在外面都行，但是如果while在外面(见下图)，会导致每循环一次都需要判断一次if, 效率降低。所以应该改为if在外层。
+3.由于这个if-while组合在pop()跟top()中都要用，改为一个内置private函数更为合适
+```Java
+        if(stack2.isEmpty()){
+            while(!stack1.isEmpty()){
+            stack2.push(stack1.pop());
+            }
+        }
+        /*not effective way
+        while(!stack1.isEmpty()){
+            if(stack2.isEmpty()){
+            stack2.push(stack1.pop());
+            }
+        }
+        */
+        
+```
