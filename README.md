@@ -823,7 +823,7 @@ public class MyQueue {
 }
 ```
 #### 易错点：
-1.while循环容易写成(!stack1.isEmpty())&& stack2.isEmpty(){stack2.push(stack1.pop())};但是这样会导致连续push 两个数，第二个数由于stack1和stack2都不空，所以push不进stack2然后出错。 所以!stack1.isEmpty()跟stack2.isEmpty()必须写在两个判断条件里面
+1.while循环容易写成(!stack1.isEmpty()&& stack2.isEmpty()){stack2.push(stack1.pop())};但是这样会导致连续push 两个数，第二个数由于stack1和stack2都不空，所以push不进stack2然后出错。 所以!stack1.isEmpty()跟stack2.isEmpty()必须写在两个判断条件里面
 2.if跟while在理论上谁在外面都行，但是如果while在外面(见下图)，会导致每循环一次都需要判断一次if, 效率降低。所以应该改为if在外层。
 3.由于这个if-while组合在pop()跟top()中都要用，改为一个内置private函数更为合适
 ```Java
@@ -874,3 +874,76 @@ public class Solution {
 }
 ```
 #### 思路：借用stack的数据结构的优势，无论是"{[()]}"还是"(){}[]",合格的括号组合必须对称，不会出现不同组合交错的情况，比如"{(})",所以要借用stack的数据结构，所有左括号的情况入栈，所有右括号的情况出栈，如果不是对应的左括号则返回false.要注意的情况是最后要查看是否是空栈，如果不是也是false，比如这种情况"({"自然也不是合格的括号。
+### 2.Implement Stack by Two Queues
+```Java
+public class Stack {
+    /*
+     * @param x: An integer
+     * @return: nothing
+     */
+    Queue<Integer> queue1 = new LinkedList<>();
+    Queue<Integer> queue2 = new LinkedList<>();
+    private void moveElements(){
+        while(queue1.size() > 1){
+            queue2.offer(queue1.peek());
+            queue1.poll();
+        }
+    } 
+    private void swapQueues(){
+        Queue<Integer> temp;
+        temp = queue1;
+        queue1 = queue2;
+        queue2 = temp;
+    }
+    public void push(int x) {
+        // write your code here
+        queue1.offer(x);
+    }
+
+    /*
+     * @return: nothing
+     */
+    public void pop() {
+        // write your code here
+        moveElements();
+        int element = queue1.poll();
+        swapQueues();
+    }
+
+    /*
+     * @return: An integer
+     */
+    public int top() {
+        // write your code here
+        moveElements();
+        int element = queue1.poll();
+        // queue1 = queue2;
+        // queue2 = new LinkedList<>();
+        swapQueues();
+        queue1.offer(element);
+        return element;
+    }
+
+    /*
+     * @return: True if the stack is empty
+     */
+    public boolean isEmpty() {
+        // write your code here
+        return queue1.size() == 0;
+    }
+}
+```
+#### 易错点: 很容易忘记在top（）中执行完取回最后一个元素的情况忘记把这个元素推回去，造成错误
+开始写的时候在top()跟pop()直接把queue2重新赋值为空linkedlist，但是这会造成存储空间的浪费。所以交换两者的值更好
+```Java
+    public int top() {
+        // write your code here
+        moveElements();
+        int element = queue1.poll();
+        // queue1 = queue2;
+        // queue2 = new LinkedList<>();
+        swapQueues();
+        queue1.offer(element);//Easily being forgotten!
+        return element;
+    }
+```
