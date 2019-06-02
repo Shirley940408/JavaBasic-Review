@@ -841,3 +841,36 @@ public class MyQueue {
         */
         
 ```
+### 2.Valid Parentheses
+#### Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
+```Java
+public class Solution {
+    /**
+     * @param s: A string
+     * @return: whether the string is a valid parentheses
+     */
+    private Stack<Character> leftParenthese = new Stack<>();
+    public boolean isValidParentheses(String s) {
+        // write your code here
+        for(int i = 0 ; i < s.length(); i++){
+            if(s.charAt(i) == '('||s.charAt(i) == '{'||s.charAt(i) == '['){
+                leftParenthese.push(s.charAt(i));
+            }
+            if(s.charAt(i) == ')'){
+                if(leftParenthese.isEmpty()||leftParenthese.pop() != '(')
+                return false;
+            }
+            if(s.charAt(i) == '}'){
+                if(leftParenthese.isEmpty()||leftParenthese.pop() != '{')
+                return false;
+            }
+            if(s.charAt(i) == ']'){
+                if(leftParenthese.isEmpty()||leftParenthese.pop() != '[')
+                return false;
+            }
+        }
+        return leftParenthese.isEmpty();
+    }
+}
+```
+#### 思路：借用stack的数据结构的优势，无论是"{[()]}"还是"(){}[]",合格的括号组合必须对称，不会出现不同组合交错的情况，比如"{(})",所以要借用stack的数据结构，所有左括号的情况入栈，所有右括号的情况出栈，如果不是对应的左括号则返回false.要注意的情况是最后要查看是否是空栈，如果不是也是false，比如这种情况"({"自然也不是合格的括号。
