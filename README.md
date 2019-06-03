@@ -947,3 +947,36 @@ public class Stack {
         return element;
     }
 ```
+### 5. Min Stack
+```java
+public class MinStack {
+    private Stack<Integer> stack;
+    private Stack<Integer> minStack;
+
+    public MinStack() {
+        stack = new Stack<Integer>();
+        minStack = new Stack<Integer>();
+    }
+
+    public void push(int number) {
+        stack.push(number);
+        if (minStack.empty() == true)
+            minStack.push(number);
+        else if (minStack.peek() >= number) // 这里考虑的相等的情况也会继续push
+            minStack.push(number);
+    }
+
+    public int pop() {
+        if (stack.peek().equals(minStack.peek()))
+            minStack.pop();
+        return stack.pop();
+    }
+
+    public int min() {
+        return minStack.peek();
+    }
+}```
+### 思路及易错点：
+让minStack push当前最小的数，保持一定是最小的数在上面
+当需要弹出时， 比较当前的数和stack中的数的大小是否相等，相等则一起弹出
+在这里很容易忽略如果minstack顶层数的大小跟入stack相等的情况，这里一定要进minstack, 否则会导致 min() 中不同时期进入元素有可能判为equal导致出错
