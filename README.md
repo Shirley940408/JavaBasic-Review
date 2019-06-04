@@ -1012,3 +1012,27 @@ public class Solution {
     }
 }
 ```
+### Maximum Depth of Binary Tree
+```Java
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: An integer
+     */
+    private int height = 0;
+    public int maxDepth(TreeNode root) {
+        // write your code here
+        helper(root, 1);
+        return height;
+    }
+    private void helper(TreeNode root, int depth){
+        if(root == null){
+            return;
+        }
+        if(height < depth){
+            height = depth;
+        }
+        helper(root.left, depth +1);
+        helper(root.right, depth +1);
+    }
+}
