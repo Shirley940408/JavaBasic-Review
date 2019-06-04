@@ -980,3 +980,35 @@ public class MinStack {
 让minStack push当前最小的数，保持一定是最小的数在上面
 当需要弹出时， 比较当前的数和stack中的数的大小是否相等，相等则一起弹出
 在这里很容易忽略如果minstack顶层数的大小跟入stack相等的情况，这里一定要进minstack, 否则会导致 min() 中不同时期进入元素有可能判为equal导致出错
+
+## (Recursive) traverse tree
+### 深度优先遍历时间复杂度(DFS)
+- 函数会执行 2n+1 次
+- 算法的时间复杂度为O(n)
+- 空间复杂度在 [O(logn), O(n)]]之间
+### Binary Tree Leaf Sum
+```Java
+public class Solution {
+    /**
+     * @param root: the root of the binary tree
+     * @return: An integer
+     */
+    private int sum = 0;  
+    public int leafSum(TreeNode root) {
+        // write your code here
+        traverse(root);
+        return sum;
+    }
+    private void traverse(TreeNode root){
+        if(root == null){
+            return;
+        }
+        if(root.left == null && root.right == null){
+            sum += root.val;
+            // return;
+        }
+        traverse(root.left);
+        traverse(root.right);
+    }
+}
+```
