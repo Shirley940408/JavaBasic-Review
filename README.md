@@ -1036,3 +1036,107 @@ public class Solution {
         helper(root.right, depth +1);
     }
 }
+### Binary Tree Path Sum
+```Java
+public class Solution {
+    /*
+     * @param root: the root of binary tree
+     * @param target: An integer
+     * @return: all valid paths
+     */
+    private List<List<Integer>> result = new ArrayList<>();
+    private int sum = 0;
+    public List<List<Integer>> binaryTreePathSum(TreeNode root, int target) {
+       // write your code here
+       List<Integer> path = new ArrayList<>();
+    //   int sum = 0;
+       if(root == null){
+           return result;
+       }
+       path.add(root.val);
+       traverse(root, path,sum + root.val, target);
+       return result;
+   }
+   public void traverse(TreeNode root, List<Integer>path,int sum, int target){
+       if(root.left == null && root.right == null){
+//           path.add(root.val);
+           if(sum == target){
+               result.add(new ArrayList<>(path));
+           }
+           return;
+       }
+       if(root.left != null){
+           sum += root.left.val;
+           System.out.println(sum);
+           path.add(root.left.val);
+           traverse(root.left,path, sum ,target);
+           path.remove(path.size()-1);
+           sum -= root.left.val;
+       }
+       if(root.right != null){
+           sum += root.right.val;
+           path.add(root.right.val);
+           traverse(root.right, path, sum, target);
+           path.remove(path.size()-1);
+           sum-= root.right.val;
+       }
+   }
+}
+```
+#### 易错点：所有需要在recursive中保留的基本数据类型必须放在recursive函数内部， 如此题中的sum，为什么需要减去最后一个加入的叶子节点的值，就是因为没有直接传进函数内部，导致函数recursive之后原来的函数中的sum 已经改变了，所以需要减去，其实本题的traverse可以改写为以下写法。
+
+```Java
+public class Solution {
+    /**
+     * @param root the root of binary tree
+     * @param target an integer
+     * @return all valid paths
+     */
+    public List<List<Integer>> binaryTreePathSum(TreeNode root, int target) {
+        // Algorithm: Traverse
+        // Use recursion to traverse the tree in preorder, pass with a parameter
+        // `sum` as the sum of each node from root to current node.
+        // Put the whole path into result if the leaf has a sum equal to target.
+        
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        
+        ArrayList<Integer> path = new ArrayList<Integer>();
+        path.add(root.val);
+        helper(root, path, root.val, target, result);
+        return result;
+    }
+    
+    private void helper(TreeNode root,
+                        ArrayList<Integer> path,
+                        int sum,
+                        int target,
+                        List<List<Integer>> result) {
+                            
+        // meet leaf
+        if (root.left == null && root.right == null) {
+            if (sum == target) {
+                result.add(new ArrayList<Integer>(path));
+            }
+            return;
+        }
+        
+        // go left
+        if (root.left != null) {
+            path.add(root.left.val);
+            helper(root.left, path, sum + root.left.val, target, result);
+            path.remove(path.size() - 1);
+        }
+        
+        // go right
+        if (root.right != null) {
+            path.add(root.right.val);
+            helper(root.right, path, sum + root.right.val, target, result);
+            path.remove(path.size() - 1);
+        }
+    }
+}
+```
+#### 给出的总结就是，基本数据类型可以用传入函数内部的方法保留当前步骤的值，引用数据类型则必须copy value， 不然留不下有效信息。
