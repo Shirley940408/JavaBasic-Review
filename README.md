@@ -1209,6 +1209,132 @@ public class Solution {
 }
 ```
 #### 总结： 凡是遍历点的停止条件都是if(root == null){return};traverse(root.left...);traverse(root.right);需要注意需要每一步保留记录的传为局部变量防止污染。
+### Binary Tree Paths
+#### Given a binary tree, return all root-to-leaf paths.
+
+```Java
+/*
+Example 1:
+
+Input：{1,2,3,#,5}
+Output：["1->2->5","1->3"]
+Explanation：
+   1
+ /   \
+2     3
+ \
+  5
+Example 2:
+
+Input：{1,2}
+Output：["1->2"]
+Explanation：
+   1
+ /   
+2 
+*/
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root of the binary tree
+     * @return: all root-to-leaf paths
+     */
+    private List<String> result = new ArrayList<>();
+    public List<String> binaryTreePaths(TreeNode root) {
+        // write your code here
+        String path = "";
+        if (root == null){
+            return result;
+        }
+        path += root.val;
+        traverse(root, path);
+        return result;
+    }
+    private void traverse(TreeNode root, String path){
+        if(root.left == null && root.right == null){
+            result.add(path);
+            return;
+        }
+        if(root.left != null){
+            traverse(root.left, path + "->" + root.left.val);
+        }
+        if(root.right != null){
+            traverse(root.right, path + "->" + root.right.val);
+        }
+    }
+}
+```
+### 总结：
+#### 如果是查找路径的，套路则是在调用traverse函数之前先要把跟节点的值写入,即path += root.val，然后把这个path作为参数传入traverse函数中，同样需要注意不要造成污染。
+### Invert a binary tree -- Left and right subtrees exchange.
+```Java
+/*
+Example
+Example 1:
+
+Input: {1,3,#}
+Output: {1,#,3}
+Explanation:
+	  1    1
+	 /  =>  \
+	3        3
+Example 2:
+
+Input: {1,2,3,#,#,4}
+Output: {1,3,2,#,4}
+Explanation: 
+	
+      1         1
+     / \       / \
+    2   3  => 3   2
+       /       \
+      4         4
+*/
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: a TreeNode, the root of the binary tree
+     * @return: nothing
+     */
+    public void invertBinaryTree(TreeNode root) {
+        // write your code here
+        TreeNode temp;
+        if(root == null){
+            return;
+        }
+        if(root.left != null || root.right != null){
+            temp = root.left;
+            root.left = root.right;
+            root.right = temp;
+            invertBinaryTree(root.left);
+            invertBinaryTree(root.right);
+        }
+    }
+}
+```
 ## BFS(宽度优先搜索)
 ### 二叉树的宽度优先遍历：分层遍历
 ```Java
