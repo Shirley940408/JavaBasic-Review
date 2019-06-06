@@ -1140,3 +1140,101 @@ public class Solution {
 }
 ```
 #### 给出的总结就是，基本数据类型可以用传入函数内部的方法保留当前步骤的值，引用数据类型则必须copy value， 不然留不下有效信息。
+### Binary Tree Level Sum
+#### Given a binary tree and an integer which is the depth of the target level.Calculate the sum of the nodes in the target level.
+```Java
+/*
+Example
+Example 1:
+
+Input：{1,2,3,4,5,6,7,#,#,8,#,#,#,#,9},2
+Output：5 
+Explanation：
+     1
+   /   \
+  2     3
+ / \   / \
+4   5 6   7
+   /       \
+  8         9
+2+3=5
+Example 2:
+
+Input：{1,2,3,4,5,6,7,#,#,8,#,#,#,#,9},3
+Output：22
+Explanation：
+     1
+   /   \
+  2     3
+ / \   / \
+4   5 6   7
+   /       \
+  8         9
+4+5+6+7=22
+*/
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: the root of the binary tree
+     * @param level: the depth of the target level
+     * @return: An integer
+     */
+    private int sum = 0;
+    public int levelSum(TreeNode root, int level) {
+        // write your code here
+        traverse(root, 1, level);
+        return sum;
+    }
+    private void traverse(TreeNode root, int depth, int level){
+        if(root == null){
+            return;
+        }
+        if(depth == level){
+            sum += root.val;
+        }
+        traverse(root.left, depth + 1, level);
+        traverse(root.right, depth + 1, level);
+    }
+}
+```
+#### 总结： 凡是遍历点的停止条件都是if(root == null){return};traverse(root.left...);traverse(root.right);需要注意需要每一步保留记录的传为局部变量防止污染。
+## BFS(宽度优先搜索)
+### 二叉树的宽度优先遍历：分层遍历
+```Java
+public class BFSByLevel {
+    public void breadthFirstTraverseByLevel(TreeNode root){
+        if(root == null){
+            return;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while(!queue.isEmpty()){
+            int n = queue.size();
+            for(int i = 0; i < n; i++){
+                TreeNode cur = queue.poll();
+                System.out.print(cur.val + " ");
+                if(cur.left != null){
+                    queue.offer(cur.left);
+                }
+                if(cur.right != null){
+                    queue.offer(cur.right);
+                }
+            }
+            System.out.println();
+        }
+    }
+}
+```
+#### 分层遍历跟不分层遍历的区别是分层遍历多一层循环
