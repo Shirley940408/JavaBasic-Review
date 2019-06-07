@@ -1439,3 +1439,76 @@ public class BFSByLevel {
 ### 二叉树的宽度优先遍历
 - 时间复杂度 O(n)
 - 空间复杂度 -- 由节点最多的层的节点数决定， O(n) 
+
+### Binary Tree Level Order Traversal
+#### Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
+```java
+/*
+Example 1:
+
+Input：{1,2,3}
+Output：[[1],[2,3]]
+Explanation：
+  1
+ / \
+2   3
+it will be serialized {1,2,3}
+level order traversal
+Example 2:
+
+Input：{1,#,2,3}
+Output：[[1],[2],[3]]
+Explanation：
+1
+ \
+  2
+ /
+3
+it will be serialized {1,#,2,3}
+level order traversal
+*/
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: A Tree
+     * @return: Level order a list of lists of integer
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        // write your code here
+        List<List<Integer>> res = new ArrayList<>();
+        if(root == null){
+            return res;
+        }
+        Queue <TreeNode> queue = new LinkedList();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int n = queue.size();
+            List<Integer> temp = new LinkedList<>();
+            for(int i = 0; i < n; i++){
+                TreeNode cur = queue.poll();
+                temp.add(cur.val);
+                if(cur.left != null){
+                    queue.offer(cur.left);
+                }
+                if(cur.right != null){
+                    queue.offer(cur.right);
+                }
+            }
+            res.add(temp);
+        }
+        return res;
+    }
+}
+```
+#### 易错点： 1.在while循环内跟for循环外面要创建一个新的Linked List，每到一个层级清空，而queue结构是一个临时存储空间，只是为了遍历到每一个节点用的。2. queue.size() 一直在变化， 必须在每次每层入队列之前取长度，否则直接作为循环条件写入出错。
