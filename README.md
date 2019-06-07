@@ -1512,3 +1512,72 @@ public class Solution {
 }
 ```
 #### 易错点： 1.在while循环内跟for循环外面要创建一个新的Linked List，每到一个层级清空，而queue结构是一个临时存储空间，只是为了遍历到每一个节点用的。2. queue.size() 一直在变化， 必须在每次每层入队列之前取长度，否则直接作为循环条件写入出错。
+
+## Divide and Conquer(分治)
+
+### Same Tree
+#### Check if two binary trees are identical. Identical means the two binary trees have the same structure and every identical position has the same value.
+
+```Java
+/*
+Example 1:
+
+Input:{1,2,2,4},{1,2,2,4}
+Output:true
+Explanation:
+        1                   1
+       / \                 / \
+      2   2   and         2   2
+     /                   /
+    4                   4
+
+are identical.
+Example 2:
+
+Input:{1,2,3,4},{1,2,3,#,4}
+Output:false
+Explanation:
+
+        1                  1
+       / \                / \
+      2   3   and        2   3
+     /                        \
+    4                          4
+
+are not identical.
+*/
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param a: the root of binary tree a.
+     * @param b: the root of binary tree b.
+     * @return: true if they are identical, or false.
+     */
+    public boolean isIdentical(TreeNode a, TreeNode b) {
+        // write your code here
+        if(a == null && b == null){
+            return true;
+        }else if(a == null || b == null){
+            return false;
+        }
+        
+        if(a.val != b.val){
+            return false;
+        }
+        
+        return isIdentical(a.left, b.left) && isIdentical(a.right, b.right);
+    }
+}
+```
+#### 总结： 用递归来做分治的一大特点是：子问题与原问题是同一类问题
