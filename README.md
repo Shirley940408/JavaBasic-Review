@@ -1335,6 +1335,78 @@ public class Solution {
     }
 }
 ```
+### Minimum Depth of Binary Tree
+#### Given a binary tree, find its minimum depth.
+```Java
+/*
+Example 1:
+
+Input: {}
+Output: 0
+Example 2:
+
+Input:  {1,#,2,3}
+Output: 3	
+Explanation:
+	1
+	 \ 
+	  2
+	 /
+	3    
+it will be serialized {1,#,2,3}
+Example 3:
+
+Input:  {1,2,3,#,#,4,5}
+Output: 2	
+Explanation: 
+      1
+     / \ 
+    2   3
+       / \
+      4   5  
+it will be serialized {1,2,3,#,#,4,5}
+*/
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+
+public class Solution {
+    /**
+     * @param root: The root of binary tree
+     * @return: An integer
+     */
+    private int min = 65535;
+    public int minDepth(TreeNode root) {
+        // write your code here
+        if(root == null){
+            return 0;
+        }
+        traverse(root, 1);
+        return min;
+    }
+    private void traverse(TreeNode root, int depth){
+        if(root.right == null && root.left == null){
+            min = Math.min(min, depth);
+            return;
+        }
+        if(root.left != null){
+            traverse(root.left, depth + 1);
+        }
+        if(root.right != null){
+            traverse(root.right, depth + 1);
+        }
+    }
+}
+```
 ## BFS(宽度优先搜索)
 ### 二叉树的宽度优先遍历：分层遍历
 ```Java
