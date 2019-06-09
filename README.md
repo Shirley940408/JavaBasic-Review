@@ -1789,3 +1789,538 @@ public class Solution {
 }
 //简单的树的遍历，点i为根的树高度，等于高度最大的子树的高度+1。
 ```
+## Sorting
+
+#### 三大普通排序算法
+- 选择排序(Selection sort)
+- 冒泡排序
+- 插入排序
+时间复杂度为O(n^2);
+空间复杂度为O(1);
+
+### Merge Sort
+#### 归并排序(merge sort) -- 分治
+- 把数组均分成左右两办；
+- 将左右两半分别排序(递归)
+- 将两个排好序的半个数组合并
+
+```java
+class Solution {
+    /**
+     * @param A and B: sorted integer array A and B.
+     * @return: A new sorted integer array
+     */
+    public int[] mergeSortedArray(int[] A, int[] B) {
+        if (A == null || B == null) {
+            return null;
+        }
+        
+        int[] result = new int[A.length + B.length];
+        int i = 0, j = 0, index = 0;
+        
+        while (i < A.length && j < B.length) {
+            if (A[i] < B[j]) {
+                result[index++] = A[i++];
+            } else {
+                result[index++] = B[j++];
+            }
+        }
+        
+        while (i < A.length) {
+            result[index++] = A[i++];
+        }
+        while (j < B.length) {
+            result[index++] = B[j++];
+        }
+        
+        return result;
+    }
+}
+```
+Assignment：
+1.[LintCode 领扣](https://www.lintcode.com/problem/reverse-pairs/description)
+
+利用归并排序的思想求逆序对，复杂度O(nlogn)
+当然也可以用树状数组或者线段树求解
+```java
+public class Solution {
+    /**
+     * @param A an array
+     * @return total of reverse pairs
+     */
+    public long reversePairs(int[] A) {
+        return mergeSort(A, 0, A.length - 1);
+    }
+    
+    private int mergeSort(int[] A, int start, int end) {
+        if (start >= end) {
+            return 0;
+        }
+        
+        int mid = (start + end) / 2;
+        int sum = 0;
+        sum += mergeSort(A, start, mid);
+        sum += mergeSort(A, mid+1, end);
+        sum += merge(A, start, mid, end);
+        return sum;
+    }
+    
+    private int merge(int[] A, int start, int mid, int end) {
+        int[] temp = new int[A.length];
+        int leftIndex = start;
+        int rightIndex = mid + 1;
+        int index = start;
+        int sum = 0;
+        
+        while (leftIndex <= mid && rightIndex <= end) {
+            if (A[leftIndex] <= A[rightIndex]) {
+                temp[index++] = A[leftIndex++];
+            } else {
+                temp[index++] = A[rightIndex++];
+                sum += mid - leftIndex + 1;
+            }
+        }
+        while (leftIndex <= mid) {
+            temp[index++] = A[leftIndex++];
+        }
+        while (rightIndex <= end) {
+            temp[index++] = A[rightIndex++];
+        }
+        
+        for (int i = start; i <= end; i++) {
+            A[i] = temp[i];
+        }
+        
+        return sum;
+    }
+}
+```
+2.https://www.jiuzhang.com/solution/insertion-sort-list
+
+与数组普通插入排序一样的做法。
+
+```java
+public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        ListNode dummy = new ListNode(0);
+        // 这个dummy的作用是，把head开头的链表一个个的插入到dummy开头的链表里
+        // 所以这里不需要dummy.next = head;
+
+        while (head != null) {
+            ListNode node = dummy;
+            while (node.next != null && node.next.val < head.val) {
+                node = node.next;
+            }
+            ListNode temp = head.next;
+            head.next = node.next;
+            node.next = head;
+            head = temp;
+        }
+
+        return dummy.next;
+    }
+}
+```
+3.https://www.lintcode.com/problem/sort-integers-ii/description
+
+快速排序实现
+
+```java
+public class Solution {
+    /**
+     * @param A an integer array
+     * @return void
+     */
+    public void sortIntegers2(int[] A) {
+        quickSort(A, 0, A.length - 1);
+    }
+    
+    private void quickSort(int[] A, int start, int end) {
+        if (start >= end) {
+            return;
+        }
+        
+        int left = start, right = end;
+        // key point 1: pivot is the value, not the index
+        int pivot = A[(start + end) / 2];
+
+        // key point 2: every time you compare left & right, it should be 
+        // left <= right not left < right
+        while (left <= right) {
+            while (left <= right && A[left] < pivot) {
+                left++;
+            }
+            while (left <= right && A[right] > pivot) {
+                right--;
+            }
+            if (left <= right) {
+                int temp = A[left];
+                A[left] = A[right];
+                A[right] = temp;
+                
+                left++;
+                right--;
+            }
+        }
+        
+        quickSort(A, start, right);
+        quickSort(A, left, end);
+    }
+}
+```
+4. https://www.jiuzhang.com/solution/partition-array
+
+
+快速选择算法
+```java
+public class Solution {
+    /** 
+     *@param nums: The integer array you should partition
+     *@param k: As description
+     *return: The index after partition
+     */
+    public int partitionArray(int[] nums, int k) {
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+
+            while (left <= right && nums[left] < k) {
+                left++;
+            }
+
+            while (left <= right && nums[right] >= k) {
+                right--;
+            }
+
+            if (left <= right) {
+                int temp = nums[left];
+                nums[left] = nums[right];
+                nums[right] = temp;
+                
+                left++;
+                right--;
+            }
+        }
+        return left;
+    }
+}
+```
+5.https://www.jiuzhang.com/solution/sort-list
+
+
+Sort a linked list in O(n log n) time using constant space complexity.
+
+
+详细题解请见九章算法微博: http://weibo.com/3948019741/ByB4LtgnG
+快速排序算法可以在链表中使用
+```java
+// version 1: Merge Sort
+public class Solution {            
+    private ListNode findMiddle(ListNode head) {
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }    
+
+    private ListNode merge(ListNode head1, ListNode head2) {
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
+        while (head1 != null && head2 != null) {
+            if (head1.val < head2.val) {
+                tail.next = head1;
+                head1 = head1.next;
+            } else {
+                tail.next = head2;
+                head2 = head2.next;
+            }
+            tail = tail.next;
+        }
+        if (head1 != null) {
+            tail.next = head1;
+        } else {
+            tail.next = head2;
+        }
+
+        return dummy.next;
+    }
+
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode mid = findMiddle(head);
+
+        ListNode right = sortList(mid.next);
+        mid.next = null;
+        ListNode left = sortList(head);
+
+        return merge(left, right);
+    }
+}
+
+// version 2: Quick Sort 1
+public class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        
+        ListNode mid = findMedian(head); // O(n)
+        
+        ListNode leftDummy = new ListNode(0), leftTail = leftDummy;
+        ListNode rightDummy = new ListNode(0), rightTail = rightDummy;
+        ListNode middleDummy = new ListNode(0), middleTail = middleDummy;
+        while (head != null) {
+            if (head.val < mid.val) {
+                leftTail.next = head;
+                leftTail = head;
+            } else if (head.val > mid.val) {
+                rightTail.next = head;
+                rightTail = head;
+            } else {
+                middleTail.next = head;
+                middleTail = head;
+            }
+            head = head.next;
+        }
+        
+        leftTail.next = null;
+        middleTail.next = null;
+        rightTail.next = null;
+        
+        ListNode left = sortList(leftDummy.next);
+        ListNode right = sortList(rightDummy.next);
+        
+        return concat(left, middleDummy.next, right);
+    }
+    
+    private ListNode findMedian(ListNode head) {
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+    
+    private ListNode concat(ListNode left, ListNode middle, ListNode right) {
+        ListNode dummy = new ListNode(0), tail = dummy;
+        
+        tail.next = left; tail = getTail(tail);
+        tail.next = middle; tail = getTail(tail);
+        tail.next = right; tail = getTail(tail);
+        return dummy.next;
+    }
+    
+    private ListNode getTail(ListNode head) {
+        if (head == null) {
+           return null;
+        } 
+       
+        while (head.next != null) {
+            head = head.next;
+        }
+        return head;
+    }
+}
+
+// version 3: Quick Sort 2
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */ 
+class Pair {
+    public ListNode first, second; 
+    public Pair(ListNode first, ListNode second) {
+        this.first = first;
+        this.second = second;
+    }
+}
+
+public class Solution {
+    /**
+     * @param head: The head of linked list.
+     * @return: You should return the head of the sorted linked list,
+                    using constant space complexity.
+     */
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        
+        ListNode mid = findMedian(head); // O(n)
+        Pair pair = partition(head, mid.val); // O(n)
+        
+        ListNode left = sortList(pair.first);
+        ListNode right = sortList(pair.second);
+        
+        getTail(left).next = right; // O(n)
+        
+        return left;
+    }
+    
+    // 1->2->3 return 2
+    // 1->2 return 1
+    private ListNode findMedian(ListNode head) {
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+    
+    // < value in the left, > value in the right
+    private Pair partition(ListNode head, int value) {
+        ListNode leftDummy = new ListNode(0), leftTail = leftDummy;
+        ListNode rightDummy = new ListNode(0), rightTail = rightDummy;
+        ListNode equalDummy = new ListNode(0), equalTail = equalDummy;
+        while (head != null) {
+            if (head.val < value) {
+                leftTail.next = head;
+                leftTail = head;
+            } else if (head.val > value) {
+                rightTail.next = head;
+                rightTail = head;
+            } else {
+                equalTail.next = head;
+                equalTail = head;
+            }
+            head = head.next;
+        }
+        
+        leftTail.next = null;
+        rightTail.next = null;
+        equalTail.next = null;
+        
+        if (leftDummy.next == null && rightDummy.next == null) {
+            ListNode mid = findMedian(equalDummy.next);
+            leftDummy.next = equalDummy.next;
+            rightDummy.next = mid.next;
+            mid.next = null;
+        } else if (leftDummy.next == null) {
+            leftTail.next = equalDummy.next;
+        } else {
+            rightTail.next = equalDummy.next;
+        }
+        
+        return new Pair(leftDummy.next, rightDummy.next);
+    }
+    
+    private ListNode getTail(ListNode head) {
+        if (head == null) {
+           return null;
+        } 
+       
+        while (head.next != null) {
+            head = head.next;
+        }
+        return head;
+    }
+}
+```
+6. https://www.jiuzhang.com/solution/kth-largest-element
+在数组中找到第 k 大的元素。
+```java
+//九章算法强化班里讲过的标准 Parition 模板。
+class Solution {
+    /*
+     * @param k : description of k
+     * @param nums : array of nums
+     * @return: description of return
+     */
+    public int kthLargestElement(int k, int[] nums) {
+        if (nums == null || nums.length == 0 || k < 1 || k > nums.length){
+            return -1;
+        }
+        return partition(nums, 0, nums.length - 1, nums.length - k);
+    }
+    
+    private int partition(int[] nums, int start, int end, int k) {
+        if (start >= end) {
+            return nums[k];
+        }
+        
+        int left = start, right = end;
+        int pivot = nums[(start + end) / 2];
+        
+        while (left <= right) {
+            while (left <= right && nums[left] < pivot) {
+                left++;
+            }
+            while (left <= right && nums[right] > pivot) {
+                right--;
+            }
+            if (left <= right) {
+                swap(nums, left, right);
+                left++;
+                right--;
+            }
+        }
+        
+        if (k <= right) {
+            return partition(nums, start, right, k);
+        }
+        if (k >= left) {
+            return partition(nums, left, end, k);
+        }
+        return nums[k];
+    }    
+    
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+};
+//标准的 Quick Select 算法
+class Solution {
+    /*
+     * @param k : description of k
+     * @param nums : array of nums
+     * @return: description of return
+     */
+    public int kthLargestElement(int k, int[] nums) {
+
+        // write your code here
+        int low = 0, high = nums.length -1;
+        while(low <= high){
+            int index = low-1;
+            for(int i = low; i < high; i++){
+                if(nums[i] > nums[high]){
+                    swap(nums, i, ++index);
+                }
+            }
+            swap(nums, ++index, high);
+            if(index == k - 1){
+                return nums[index];
+            }
+            if(index < k -1){
+                low = index + 1;
+            }else{
+                high = index - 1;
+            }
+        }
+        return -1;
+    }
+    
+    private void swap(int[] nums, int a, int b){
+        int temp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = temp;
+    }
+};```
