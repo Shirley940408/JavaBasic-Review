@@ -1864,7 +1864,7 @@ void sort(int arr[])
 - 把数组均分成左右两办；
 - 将左右两半分别排序(递归)
 - 将两个排好序的半个数组合并
-
+### The idea of merge
 ```java
 class Solution {
     /**
@@ -1898,6 +1898,51 @@ class Solution {
     }
 }
 ```
+
+### Merge Sort
+```java
+    public int[] mergeSortedArray(int[] array, int left, int right){
+        int[] result = new int [right - left + 1];
+        int mid = left + (right - left) / 2;
+        int[] A = Arrays.copyOfRange(array, left, mid );
+        int[] B = Arrays.copyOfRange(array, mid, right + 1);
+        if(A == null || B == null){
+            return null;
+        }
+        int i = 0, j = 0, index = 0;
+        while(i < A.length && j < B.length){
+            if(A[i] < B[j]){
+                result[index++] = A[i++];
+            }else{
+                result[index++] = B[j++];
+            }
+        }
+        while(i < A.length){
+            result[index++] = A[i++];
+        }
+        while(j < B.length){
+            result[index++] = B[j++];
+        }
+        for (int k = 0; k < right - left + 1; k++){
+            array[left + k] = result[k];
+        }
+        return array;
+
+    }
+    public int[] mergeSort(int[] array){
+        return mergeSortHelper(array, 0, array.length - 1);
+    }
+    private int[] mergeSortHelper(int[] array, int left, int right){
+        if (left >= right){
+            return null;
+        }
+        int mid = left + (right - left)/2;
+        mergeSortHelper(array, left, mid);
+        mergeSortHelper(array,mid + 1, right);
+        return mergeSortedArray(array, left, right);
+    }
+```
+#### 易错点 分中心点和merge的步骤都要在一个array里面完成，实际上是在一个array的同一个地址上面不停的改顺序，由小到大最后完成。
 Assignment：
 1.[LintCode 领扣](https://www.lintcode.com/problem/reverse-pairs/description)
 
