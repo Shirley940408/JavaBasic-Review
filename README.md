@@ -1943,6 +1943,96 @@ class Solution {
     }
 ```
 #### 易错点 分中心点和merge的步骤都要在一个array里面完成，实际上是在一个array的同一个地址上面不停的改顺序，由小到大最后完成。
+### QuickSort
+- 选择一个pivot
+- 定义两个指针从数组的头尾同时查，让左边小于pivot，右边大于pivot，然后指针向内移动，保证左指针小于等于右指针，然后如果碰到等于或超过pivot限制范围的情况停下来，等两边都停下来了交换数组中的两者位置，然后继续查,直到不满足左指针小于等于右指针
+- 此时已经出现了左边数组小于右边数组的情况，注意此时一定是右指针在前，越过了做指针，然后递归剩余的数组，也就是说原有的右指针成为了左边数组的右边界，原有的做指针成为了右边数组的左边界
+```Java
+public class QuickSort {
+    public void quickSort(int[] array){
+        quickSortHelper(array, 0, array.length - 1);
+    }
+    public void swap(int[] array,int a, int b){
+        int temp = array[a];
+        array[a] = array[b];
+        array[b] = temp;
+    }
+    private void quickSortHelper(int[] array, int left, int right){
+        if(left >=right ){
+            return;
+        }
+        int i = left, j = right;
+        int pivot = array[left + (right - left) / 2];
+        while( i <= j ){
+            while( i <= j && array[i] < pivot){
+                ++i;
+            }
+            while( i <= j && array[j] > pivot){
+                --j;
+            }
+            if(i <= j){
+                swap(array, i++, j--);
+                //注意这一步是先传参再执行++，——
+                //完成执行之后的j<=i,所以有后面的left到j, right到i
+            }
+        }
+        quickSortHelper(array, left, j);
+        quickSortHelper(array, i, right);
+    }
+}
+```
+### How to write a testcase
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+public class TestCase {
+    public void testQuickSort(){
+        int len = 100;
+        int[] array = new int[len];
+        Random random = new Random();
+        Map<Integer, Integer> freq = new HashMap<>();
+        int number;
+        for(int i = 0; i < len; ++i){
+            number = random.nextInt();
+            array[i] = number;
+            if(freq.containsKey(number)){
+                freq.put(number, freq.get(number) + 1);
+            }else{
+                freq.put(number, 1);
+            }
+        }
+        QuickSort quickSort = new QuickSort();
+        quickSort.quickSort(array);
+
+        Map<Integer, Integer> newFreq = new HashMap();
+        for(int i = 0; i < len; ++i){
+             number = array[i];
+
+             if(newFreq.containsKey(number)){
+                 newFreq.put(number, freq.get(number) + 1);
+             }else{
+                 newFreq.put(number, 1);
+             }
+        }
+        //比较元素是否数量一致
+        if(!freq.equals(newFreq)){
+            System.out.println("Failed");
+            return;
+        }
+        //比较是否是有序的
+        //两者都通过则为正确，否则错误
+        for (int i = 1; i < array.length; i++){
+            if(array[i] > array [i-1]){
+                System.out.println("Success");
+            }else{
+                System.out.println("Failed");
+            }
+        }
+    }
+}
+```
 Assignment：
 1.[LintCode 领扣](https://www.lintcode.com/problem/reverse-pairs/description)
 
