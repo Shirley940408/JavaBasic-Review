@@ -2033,6 +2033,11 @@ public class TestCase {
     }
 }
 ```
+
+### QuickSort pivot selection: do not select the first or the last, for it would go to O(n^2);
+### It means that no method can guarantee to avoid this Degradation. The ideally time complexity is O(nlogn).
+#### 关于子问题边界的问题：就算最后是j越过i且j和i不相邻，也不会有问题，因为中间错过的元素一定是pivot；在数组元素等于pivot相等的时候必须停下来，因为如果不停在有多个相同元素相邻的情况下陷入死循环最后在stack overflow后被kill.
+
 Assignment：
 1.[LintCode 领扣](https://www.lintcode.com/problem/reverse-pairs/description)
 
