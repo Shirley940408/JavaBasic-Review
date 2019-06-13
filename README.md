@@ -2038,6 +2038,29 @@ public class TestCase {
 ### It means that no method can guarantee to avoid this Degradation. The ideally time complexity is O(nlogn).
 #### 关于子问题边界的问题：就算最后是j越过i且j和i不相邻，也不会有问题，因为中间错过的元素一定是pivot；在数组元素等于pivot相等的时候必须停下来，因为如果不停在有多个相同元素相邻的情况下陷入死循环最后在stack overflow后被kill.
 
+### Java自带的排序方法
+#### 快速排序
+- Array.sort 用于数组排序
+- Collections.sort 用与集合排序
+#### 如果需要用collections对集合制定顺序排序：
+```java
+ public class JavaSortingMethods {
+    public List<Integer> withSequenceControlled(){
+        Comparator<Integer> comparator = new Comparator<Integer>(){
+            @Override
+            public int compare(Integer o1, Integer o2){
+                return o1 - o2;
+                //递减就改成o2 - o1
+            }
+        };
+        List<Integer> arrayList = new ArrayList<>();
+        arrayList.add(5);
+        arrayList.add(1);
+        arrayList.add(3);
+        arrayList.add(2);
+        Collections.sort(arrayList, comparator);
+        return arrayList;
+    }
 Assignment：
 1.[LintCode 领扣](https://www.lintcode.com/problem/reverse-pairs/description)
 
